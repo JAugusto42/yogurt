@@ -40,8 +40,9 @@ class Main
     buffer = open(url).read
     obj = JSON.parse(buffer)
     packages = obj['resultcount']
-    names = obj['results'].map { |result| result['Name'] }
-    version = obj['results'].map { |result| result['Version'] }
+    packages_name = obj['results']
+    names = packages_name.map { |result| result['Name'] }
+    version = packages_name.map { |result| result['Version'] }
     puts ":: Found #{packages} packages"
     count = 0
     while count < packages
