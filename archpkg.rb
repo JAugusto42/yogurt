@@ -8,10 +8,8 @@ require 'json'
 # associar o package com o numero para q, em vez de passar o numero, passe o pacote correspondente.
 
 class Main
-  # [global vars]-------------------------------
-
   def initialize
-    raise 'Requires ruby >= 2.4.0' if RUBY_VERSION < '2.4.0'
+    raise 'Requires ruby >= 2.4.0' if RUBY_VERSION < '2.4.0' # temp
 
     case ARGV[0]
     when '-S'
@@ -21,6 +19,9 @@ class Main
       search
 
     when '-h'
+      help
+
+    when '--help'
       help
 
     else
@@ -34,7 +35,7 @@ class Main
 
   def search
     pacman_local_dir = '/var/lib/pacman/local/' # to read all packges installed
-    packages_local = Dir.children(pacman_local_dir) # get all packages
+    packages_local = Dir.children(pacman_local_dir) # get only packages names
 
     pkg = ARGV[1]
 
@@ -53,12 +54,9 @@ class Main
     count = 1
     exit unless packages > 0
     while count < packages
-
       name_and_version = "#{names[count]}-#{version[count]}"
-
-      check = print('Installed ') if packages_local.include?(name_and_version) # é o que???? uehueheuheuheueh
-
-      puts ":: \e[32m#{count}\e[0m aur/#{names[count]} \e[0;34m#{version[count]}\e[0m #{check}\n   #{description[count]}"
+      check = print("\e[1;34mInstalled\e[0m ") if packages_local.include?(name_and_version)
+      puts ":: \e[1;32m#{count}\e[0m aur/#{names[count]} \e[0;32m#{version[count]}\e[0m#{check}\n   #{description[count]}"
       count += 1
     end
     # range = (0..count).to_a
@@ -71,7 +69,7 @@ class Main
 
   Usage:
     -Ss <package>   Find a package
-    -S  <package>   Install a package
+    -S  <package>   Install a package ( IN DEVELOPMENT )
     HEREDOC
   end
 end
