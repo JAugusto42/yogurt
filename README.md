@@ -1,14 +1,13 @@
-# archpkg
-Aur helper for Arch Linux
+# Archpkg
+Archpkg is a simple AUR helper for Arch Linux writed in Ruby Programming Language and use the pacman syntax.
 
-# Requirements
+## Requirements
 Ruby >= 2.4
 
-# How to use?
-*** Testing Version *
-./archpkg.rb -Ss packagename
+## How to use?
 
-for exemple
+### Search packages
+`./archpkg -Ss packagename`
 
-./archpkg.rb -Ss vim
-
+### Install packages (In Development)
+`./archpkg -S packagename`
