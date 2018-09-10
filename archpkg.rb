@@ -6,6 +6,10 @@ require 'json'
 # #[TODOS]#################
 # funcionar depois refatorar
 # associar o package com o numero para q, em vez de passar o numero, passe o pacote correspondente.
+# Usar variaveis globais
+# Colocar variavel de ambiente do editor de texto para editar o pkgbuild
+# Adicionar mais extenções como .deb .zip para baixar um pacote e ele tera que verificar
+# um por um analisando a resposta 200 da url e baixar =D
 
 class Main
   def initialize
@@ -29,8 +33,35 @@ class Main
     end
   end
 
-  def install_pkg
-    # TODO
+  def install_pkg()
+
+    pkg = ARGV[1]
+    editor = ENV['EDITOR']
+
+    raise "EDITOR environment variable is not set" if editor.nil?
+
+    download_dir = '/tmp/'
+    base_download_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz"
+    pkgbuild_url = "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=#{pkg}"
+
+    raise 'Specify the AUR package you want to build\nUsage: archpkg -S [package]' if pkg.nil?
+
+    puts ":: Installing #{pkg} from aur"
+    #TODO tratar tudo isso abaixo com ruby
+    puts `curl -o /tmp/#{pkg}.tar.gz #{base_download_url}`
+
+    Dir.chdir '/tmp/'
+
+    puts `tar zxvf #{pkg}.tar.gz`
+    puts `rm #{pkg}.tar.gz`
+
+    Dir.chdir "/tmp/#{pkg}"
+
+    puts ":: Edit #{pkg} PKGBUILD? [Y/n]"
+    system("#{editor} PKGBUILD") unless STDIN.gets.chomp.upcase == 'N'
+    puts `makepkg -csi && rm -r #{pkg}`
+
+
   end
 
   def search
@@ -56,7 +87,8 @@ class Main
     while count < packages
       name_and_version = "#{names[count]}-#{version[count]}"
       check = print("\e[1;34mInstalled\e[0m ") if packages_local.include?(name_and_version)
-      puts ":: \e[1;32m#{count}\e[0m aur/#{names[count]} \e[0;32m#{version[count]}\e[0m#{check}\n   #{description[count]}"
+      puts ":: \e[1;32m#{count}\e[0m aur/#{names[count]} \e[0;32m#{version[count]}\e[0m #{check}"
+      puts "  #{description[count]}"
       count += 1
     end
     # range = (0..count).to_a
