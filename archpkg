@@ -4,12 +4,12 @@ require 'open-uri'
 require 'json'
 
 # #[TODOS]#################
-# funcionar depois refatorar
-# associar o package com o numero para q, em vez de passar o numero, passe o pacote correspondente.
+# Funcionar depois refatorar o código
+# Associar o package com o número para que, em vez de passar o número, passe o pacote correspondente.
 # Usar variaveis globais
 # Colocar variavel de ambiente do editor de texto para editar o pkgbuild
 # Adicionar mais extenções como .deb .zip para baixar um pacote e ele tera que verificar
-# um por um analisando a resposta 200 da url e baixar =D
+# Um por um analisando a resposta 200 da url e baixar =D
 
 class Main
   def initialize
@@ -29,7 +29,9 @@ class Main
       help
 
     else
-      puts 'Invalid Input! Try again...'
+      option = ARGV[0]
+      puts "Invalid option --'#{option}'"
+      puts "Try './archpkg --help' for more information."
     end
   end
 
@@ -65,8 +67,7 @@ class Main
   end
 
   def search
-    pacman_local_dir = '/var/lib/pacman/local/' # to read all packges installed
-    packages_local = Dir.children(pacman_local_dir) # get only packages names
+    packages_local = Dir.children('/var/lib/pacman/local') # get only packages names
 
     pkg = ARGV[1]
 
