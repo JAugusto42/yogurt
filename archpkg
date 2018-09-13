@@ -2,18 +2,23 @@
 
 require 'open-uri'
 require 'json'
+require 'rubygems/package'
+require 'zlib'
 
 # #[TODOS]#################
 # Funcionar depois refatorar o código
 # Associar o package com o número para que, em vez de passar o número, passe o pacote correspondente.
 # Usar variaveis globais
-# Colocar variavel de ambiente do editor de texto para editar o pkgbuild
 # Adicionar mais extenções como .deb .zip para baixar um pacote e ele tera que verificar
 # Um por um analisando a resposta 200 da url e baixar =D
+# Atualizar o metodo de instalação de pacotes, usando shell script ta feio.
+# Modularizar a aplicãção, separando update, remove, install e seach em pequenos modulos.
+
+#FIXME Se entrar nomes compostos na busca ele nao pega o segundo nome ( ARGV )
 
 class Main
   def initialize
-    raise 'Requires ruby >= 2.4.0' if RUBY_VERSION < '2.4.0' # temp
+    raise 'Requires ruby >= 2.4.0' if RUBY_VERSION < '2.4.0'
 
     case ARGV[0]
     when '-S'
@@ -30,12 +35,20 @@ class Main
 
     else
       option = ARGV[0]
-      puts "Invalid option --'#{option}'"
+      puts "Invalid option --#{option}"
       puts "Try './archpkg --help' for more information."
     end
   end
 
-  def install_pkg()
+  def update
+    # TODO
+  end
+
+  def remove
+    # TODO
+  end
+
+  def install_pkg
 
     pkg = ARGV[1]
     editor = ENV['EDITOR']
@@ -49,20 +62,53 @@ class Main
     raise 'Specify the AUR package you want to build\nUsage: archpkg -S [package]' if pkg.nil?
 
     puts ":: Installing #{pkg} from aur"
-    #TODO tratar tudo isso abaixo com ruby
+
     puts `curl -o /tmp/#{pkg}.tar.gz #{base_download_url}`
 
     Dir.chdir '/tmp/'
 
-    puts `tar zxvf #{pkg}.tar.gz`
+    tar_longlink = '././@LongLink'
+    tar_gz_archive = "#{pkg}.tar.gz"
+    destination = '.'
+    begin
+      Gem::Package::TarReader.new(Zlib::GzipReader.open(tar_gz_archive)) do |tar|
+        dest = nil
+        tar.each do |entry|
+          if entry.full_name == tar_longlink
+            dest = File.join destination, entry.read.strip
+            next
+          end
+          dest ||= File.join destination, entry.full_name
+          if entry.directory?
+            FileUtils.rm_rf dest unless File.directory? dest
+            FileUtils.mkdir_p dest, mode: entry.header.mode, verbose: false
+          elsif entry.file?
+            FileUtils.rm_rf dest unless File.file? dest
+            File.open dest, 'wb' do |f|
+              f.print entry.read
+            end
+            FileUtils.chmod entry.header.mode, dest, verbose: false
+          elsif entry.header.typeflag == '2'
+            File.symlink entry.header.linkname, dest
+          end
+          dest = nil
+        end
+      end
+    rescue Zlib::GzipFile::Error => error
+      puts "#{error.class}: #{error}"
+      exit
+    end
+
     puts `rm #{pkg}.tar.gz`
 
     Dir.chdir "/tmp/#{pkg}"
 
     puts ":: Edit #{pkg} PKGBUILD? [Y/n]"
     system("#{editor} PKGBUILD") unless STDIN.gets.chomp.upcase == 'N'
-    puts `makepkg -csi && rm -r #{pkg}`
+    puts `makepkg -csi`
 
+    Dir.chdir "/tmp/"
+    puts `rm -r #{pkg}`
 
   end
 
