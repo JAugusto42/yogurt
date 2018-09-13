@@ -1,5 +1,5 @@
-# Archpkg
-Archpkg is a simple AUR helper for Arch Linux written in Ruby Programming Language and uses pacman syntax.
+# YAAH
+yaah is a simple AUR helper for Arch Linux written in Ruby Programming Language and uses pacman syntax.
 
 ## Requirements
 `Ruby >= 2.4`
