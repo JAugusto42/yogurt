@@ -10,7 +10,7 @@ yaah is a simple AUR helper for Arch Linux written in Ruby Programming Language 
 ### Search packages
 `./archpkg -Ss packagename`
 
-### Install packages (In Development)
+### Install packages (In Testing)
 `./archpkg -S packagename`
 
 ### TODOs
