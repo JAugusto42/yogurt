@@ -1,15 +1,9 @@
 #!/usr/bin/env ruby
 
-require 'open-uri'
-require 'json'
-require 'rubygems/package'
-require 'zlib'
-
 # Creator: José Augusto
 # Create date: 20/08/2018
 # Last update: 13/09/2018
 # Contribuitors: Esdras Tarsis, brazilian ruby community.
-
 
 # #[TODOS]#################
 # Funcionar depois refatorar o código
@@ -21,10 +15,37 @@ require 'zlib'
 # Modularizar a aplicãção, separando update, remove, install e seach em pequenos modulos.
 
 # FIXME Se entrar nomes compostos na busca ele nao pega o segundo nome ( ARGV )
+# TODO checkar se há mais de um ARGV e concatenar
+
+# gems
+require 'open-uri'
+require 'json'
+require 'rubygems/package'
+require 'zlib'
+
+# Local Files
+require_relative 'lib/modules/help'
+require_relative 'lib/modules/install'
+require_relative 'lib/modules/remove'
+require_relative 'lib/modules/search'
+require_relative 'lib/modules/update'
 
 class Main
+  # include function from modules
+  include Help
+  include Install
+  #  TODO include Remove
+  include Search
+  include Update
+
   def initialize
     raise 'Requires ruby >= 2.4.0' if RUBY_VERSION < '2.4.0'
+
+    if ARGV.empty?
+      puts 'No package to seach, try again'
+      # call help function
+      exit
+    end
 
     case ARGV[0]
     when '-S'
@@ -47,136 +68,6 @@ class Main
       puts "Invalid option --#{option}"
       puts "Try './archpkg --help' for more information."
     end
-  end
-
-  def update
-    puts ':: Searching for aur packages updates...'
-    aur_pkgs = `sudo pacman -Qm`
-    aur_pkg_array = aur_pkgs.split("\n")
-    count = 1
-
-    aur_pkg_array.each do |pkg_name|
-      name_aur_pkg = "#{pkg_name}".split[0] # get name package
-      pkg_local_version = "#{pkg_name}".split[1] # get local packages version
-
-      url = "https://aur.archlinux.org/rpc/?v=5&type=search&arg=#{name_aur_pkg}"
-      buffer = open(url).read
-      obj = JSON.parse(buffer)
-      packages_name = obj['results']
-      names = packages_name.map { |result| result['Name'] }
-      version = packages_name.map { |result| result['Version'] }
-
-      name_and_version = "#{names}-#{version}"
-      puts name_and_version
-    end
-  end
-
-  def remove
-    # TODO
-  end
-
-  def install_pkg
-
-    pkg = ARGV[1]
-    editor = ENV['EDITOR']
-
-    raise 'EDITOR environment variable is not set' if editor.nil?
-
-    download_dir = '/tmp/'
-    base_download_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz"
-    pkgbuild_url = "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=#{pkg}"
-
-    raise 'Specify the AUR package you want to build\nUsage: archpkg -S [package]' if pkg.nil?
-
-    puts ":: Installing #{pkg} from aur"
-
-    puts `curl -o /tmp/#{pkg}.tar.gz #{base_download_url}`
-
-    Dir.chdir '/tmp/'
-
-    tar_longlink = '././@LongLink'
-    tar_gz_archive = "#{pkg}.tar.gz"
-    destination = '.'
-    begin
-      Gem::Package::TarReader.new(Zlib::GzipReader.open(tar_gz_archive)) do |tar|
-        dest = nil
-        tar.each do |entry|
-          if entry.full_name == tar_longlink
-            dest = File.join destination, entry.read.strip
-            next
-          end
-          dest ||= File.join destination, entry.full_name
-          if entry.directory?
-            FileUtils.rm_rf dest unless File.directory? dest
-            FileUtils.mkdir_p dest, mode: entry.header.mode, verbose: false
-          elsif entry.file?
-            FileUtils.rm_rf dest unless File.file? dest
-            File.open dest, 'wb' do |f|
-              f.print entry.read
-            end
-            FileUtils.chmod entry.header.mode, dest, verbose: false
-          elsif entry.header.typeflag == '2'
-            File.symlink entry.header.linkname, dest
-          end
-          dest = nil
-        end
-      end
-    rescue Zlib::GzipFile::Error => error
-      puts "#{error.class}: #{error}"
-      exit
-    end
-
-    puts `rm #{pkg}.tar.gz`
-
-    Dir.chdir "/tmp/#{pkg}"
-
-    puts ":: Edit #{pkg} PKGBUILD? [Y/n]"
-    system("#{editor} PKGBUILD") unless STDIN.gets.chomp.upcase == 'N'
-    puts `makepkg -csi`
-
-    Dir.chdir '/tmp/'
-    puts `rm -r #{pkg}`
-
-  end
-
-  def search
-    packages_local = Dir.children('/var/lib/pacman/local') # get only packages names
-
-    pkg = ARGV[1]
-
-    puts ":: Seaching #{pkg} on aur..."
-    url = "https://aur.archlinux.org/rpc/?v=5&type=search&arg=#{pkg}"
-    buffer = open(url).read
-    obj = JSON.parse(buffer)
-    packages = obj['resultcount']
-    packages_name = obj['results']
-
-    names = packages_name.map { |result| result['Name'] }
-    version = packages_name.map { |result| result['Version'] }
-    description = packages_name.map { |result| result['Description'] }
-
-    puts ":: Found #{packages} packages"
-    count = 1
-    exit unless packages > 0
-    while count < packages
-      name_and_version = "#{names[count]}-#{version[count]}"
-      check = print("\e[1;34mInstalled\e[0m ") if packages_local.include?(name_and_version)
-      puts ":: \e[1;32m#{count}\e[0m aur/#{names[count]} \e[0;32m#{version[count]}\e[0m #{check}"
-      puts "  #{description[count]}"
-      count += 1
-    end
-    # range = (0..count).to_a
-    # input_packages = STDIN.gets.chomp.to_i
-    # install_pkg(input_packages) if range.include?(input_packages)
-  end
-
-  def help
-    puts <<-HEREDOC
-  YAAH! Yet Another Aur Helper.
-  Usage:
-    -Ss <package>   Find a package
-    -S  <package>   Install a package ( IN TESTING )
-    HEREDOC
   end
 end
 
