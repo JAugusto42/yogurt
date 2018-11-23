@@ -4,13 +4,12 @@ module Install
   def install_pkg
 
     pkg = ARGV[1]
-    editor = ENV['EDITOR']
+    editor = 'nano'
 
     raise 'EDITOR environment variable is not set' if editor.nil?
 
-    download_dir = '/tmp/'
     base_download_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz"
-    pkgbuild_url = "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=#{pkg}"
+    # pkgbuild_url = "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=#{pkg}"
 
     raise 'Specify the AUR package you want to build\nUsage: archpkg -S [package]' if pkg.nil?
 
@@ -57,7 +56,7 @@ module Install
     Dir.chdir "/tmp/#{pkg}"
 
     puts ":: Edit #{pkg} PKGBUILD? [Y/n]"
-    system("#{editor} PKGBUILD") unless STDIN.gets.chomp.upcase == 'N'
+    system("#{editor} PKGBUILD") unless STDIN.gets.chomp.casecmp('N').zero?
     puts `makepkg -csi`
 
     Dir.chdir '/tmp/'
