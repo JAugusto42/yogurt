@@ -12,10 +12,6 @@
 # Adicionar mais extenções como .deb .zip para baixar um pacote e ele tera que verificar
 # Um por um analisando a resposta 200 da url e baixar =D
 # Atualizar o metodo de instalação de pacotes, usando shell script ta feio.
-# Modularizar a aplicãção, separando update, remove, install e seach em pequenos modulos.
-
-# FIXME Se entrar nomes compostos na busca ele nao pega o segundo nome ( ARGV )
-# TODO checkar se há mais de um ARGV e concatenar
 
 # gems
 require 'open-uri'

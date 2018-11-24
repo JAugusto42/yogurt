@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'fileutils'
+
 module Install
   def install_pkg
     pkg = ARGV[2].nil? ? ARGV[1] : "#{ARGV[1]}-#{ARGV[2]}"
@@ -11,7 +13,7 @@ module Install
     base_download_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz"
     # pkgbuild_url = "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=#{pkg}"
 
-    raise 'Specify the AUR package you want to build\nUsage: archpkg -S [package]' if pkg.nil?
+    raise 'Specify the AUR package you want\nUsage: archpkg -S [package]' if pkg.nil?
 
     puts ":: Installing #{pkg} from aur"
 
@@ -51,18 +53,15 @@ module Install
       exit
     end
 
-    # puts `rm #{pkg}.tar.gz`
     File.delete("#{pkg}.tar.gz")
 
     Dir.chdir "/tmp/#{pkg}"
 
     puts ":: Edit #{pkg} PKGBUILD? [Y/n]"
     system("#{editor} PKGBUILD") unless STDIN.gets.chomp.casecmp('N').zero?
-    puts `makepkg -csi`
+    system('makepkg -csi')
 
     Dir.chdir '/tmp/'
-    File.delete(pkg.to_s)
-    # puts `rm -r #{pkg}`
-
+    FileUtils.rm_r pkg.to_s
   end
 end
