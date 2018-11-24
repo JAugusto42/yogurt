@@ -2,8 +2,8 @@
 
 module Install
   def install_pkg
+    pkg = ARGV[2].nil? ? ARGV[1] : "#{ARGV[1]}-#{ARGV[2]}"
 
-    pkg = ARGV[1]
     editor = 'nano'
 
     raise 'EDITOR environment variable is not set' if editor.nil?
@@ -51,7 +51,8 @@ module Install
       exit
     end
 
-    puts `rm #{pkg}.tar.gz`
+    # puts `rm #{pkg}.tar.gz`
+    File.delete("#{pkg}.tar.gz")
 
     Dir.chdir "/tmp/#{pkg}"
 
@@ -60,7 +61,8 @@ module Install
     puts `makepkg -csi`
 
     Dir.chdir '/tmp/'
-    puts `rm -r #{pkg}`
+    File.delete(pkg.to_s)
+    # puts `rm -r #{pkg}`
 
-  end 
+  end
 end

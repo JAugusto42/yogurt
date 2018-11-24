@@ -4,7 +4,8 @@ module Search
   def search
     packages_local = Dir.children('/var/lib/pacman/local') # get only packages names
 
-    pkg = ARGV[1]
+    # Verifica se ARGV[2] existe
+    pkg = ARGV[2].nil? ? ARGV[1] : "#{ARGV[1]}-#{ARGV[2]}"
 
     puts ":: Seaching #{pkg} on aur..."
     url = "https://aur.archlinux.org/rpc/?v=5&type=search&arg=#{pkg}"
