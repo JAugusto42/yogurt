@@ -38,8 +38,8 @@ class Main
     raise 'Requires ruby >= 2.4.0' if RUBY_VERSION < '2.4.0'
 
     if ARGV.empty?
-      puts 'No package to seach, try again'
-      # call help function
+      puts 'No package to seach, you have to especify a package'
+      help
       exit
     end
 
@@ -61,10 +61,11 @@ class Main
 
     else
       option = ARGV[0]
-      puts "Invalid option --#{option}"
+      puts "Invalid option #{option}"
       puts "Try './archpkg --help' for more information."
+      exit
     end
   end
 end
 
-main = Main.new
+Main.new

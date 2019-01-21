@@ -4,9 +4,10 @@ require 'fileutils'
 
 module Install
   def install_pkg
+    # TODO add more then 2 packages support
     pkg = ARGV[2].nil? ? ARGV[1] : "#{ARGV[1]}-#{ARGV[2]}"
 
-    editor = 'nano'
+    editor = 'nano' # TODO ask for what editor want to use.
 
     raise 'EDITOR environment variable is not set' if editor.nil?
 
@@ -17,7 +18,7 @@ module Install
 
     puts ":: Installing #{pkg} from aur"
 
-    puts `curl -o /tmp/#{pkg}.tar.gz #{base_download_url}`
+    puts `curl -o /tmp/#{pkg}.tar.gz #{base_download_url}` # TODO get package with ruby, not curl
 
     Dir.chdir '/tmp/'
 
