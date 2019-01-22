@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
+require 'open-uri'
 
 module Install
   def install_pkg
@@ -18,7 +19,7 @@ module Install
 
     puts ":: Installing #{pkg} from aur"
 
-    puts `curl -o /tmp/#{pkg}.tar.gz #{base_download_url}` # TODO get package with ruby, not curl
+    system(`curl -o /tmp/#{pkg}.tar.gz #{base_download_url}`) # TODO get package with ruby, not curl
 
     Dir.chdir '/tmp/'
 
