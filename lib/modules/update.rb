@@ -50,6 +50,8 @@ module Update
   end
 
   def update
+    puts ':: Searching updates on official repositories...'
+    system('sudo pacman -Syyu')
     puts ':: Searching for aur packages updates...'
     aur_pkgs = `sudo pacman -Qm`
     aur_pkg_array = aur_pkgs.split("\n")
@@ -64,7 +66,6 @@ module Update
       packages_name = obj['results']
       name = packages_name.map { |result| result['Name'] }
       version = packages_name.map { |result| result['Version'] }
-
       #name_and_version = "#{name} #{version}"
       #puts name_and_version
       #puts pkg_local_version
