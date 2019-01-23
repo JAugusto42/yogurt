@@ -1,5 +1,5 @@
-# YAAH
-yaah is a simple AUR helper for Arch Linux written in Ruby Programming Language and uses pacman syntax.
+# YOGURT
+yogurt is a simple AUR helper for Arch Linux written in Ruby Programming Language and uses pacman syntax.
 
 ## Requirements
 `Ruby >= 2.4`
@@ -7,13 +7,14 @@ yaah is a simple AUR helper for Arch Linux written in Ruby Programming Language 
 
 ## How to use?
 
-### Search packages
-`./yaah -Ss packagename`
+### How to install
 
-### Install packages (In Testing)
-`./yaah -S packagename`
+### Search packages
+`./yogurt -Ss packagename`
+
+### Install packages
+`./yogurt -S packagename`
 
 ### TODOs
 `Update package`
-`Remove package`
 `pkgbuild`

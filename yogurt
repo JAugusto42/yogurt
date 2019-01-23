@@ -2,7 +2,7 @@
 
 # Creator: José Augusto
 # Create date: 20/08/2018
-# Last update: 13/09/2018
+# Last update: 23/01/2019
 # Contribuitors: Esdras Tarsis, brazilian ruby community.
 
 # #[TODOS]#################
@@ -38,8 +38,7 @@ class Main
     raise 'Requires ruby >= 2.4.0' if RUBY_VERSION < '2.4.0'
 
     if ARGV.empty?
-      puts 'No package to seach, you have to especify a package'
-      help
+      update
       exit
     end
 
