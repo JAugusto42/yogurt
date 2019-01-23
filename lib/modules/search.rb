@@ -3,8 +3,11 @@
 module Search
   def search
     packages_local = Dir.children('/var/lib/pacman/local') # get only packages names
+    if ARGV[1].nil?
+      puts 'You have to specify a package to search like yogurt -Ss package name'
+      exit
 
-    if ARGV[2].nil?
+    elsif ARGV[2].nil?
       pkg = ARGV[1]
 
     elsif ARGV[3].nil?

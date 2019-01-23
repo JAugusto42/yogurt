@@ -62,7 +62,7 @@ class Main
     else
       option = ARGV[0]
       puts "Invalid option #{option}"
-      puts "Try './archpkg --help' for more information."
+      puts "Try './yogurt --help' for more information."
       exit
     end
   end

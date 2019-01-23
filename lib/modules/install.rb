@@ -6,8 +6,26 @@ require 'open-uri'
 module Install
   def install_pkg
     # TODO add more then 2 packages support
-    pkg = ARGV[2].nil? ? ARGV[1] : "#{ARGV[1]}-#{ARGV[2]}"
+    #pkg = ARGV[2].nil? ? ARGV[1] : "#{ARGV[1]}-#{ARGV[2]}"
+    if ARGV[1].nil?
+      puts 'You have to specify a package from aur repository. Usage: yogurt -S package'
+      exit
 
+    elsif ARGV[2].nil?
+      pkg = ARGV[1]
+
+    elsif ARGV[3].nil?
+      pkg = "#{ARGV[1]}-#{ARGV[2]}"
+
+    elsif ARGV[4].nil?
+      pkg = "#{ARGV[1]}-#{ARGV[2]}-#{ARGV[3]}"
+
+    elsif ARGV[5].nil?
+      pkg = "#{ARGV[1]}-#{ARGV[2]}-#{ARGV[3]}-#{ARGV[4]}"
+
+    elsif ARGV[6].nil?
+      pkg = "#{ARGV[1]}-#{ARGV[2]}-#{ARGV[3]}-#{ARGV[4]}-#{ARGV[5]}"
+    end
     editor = 'nano' # TODO ask for what editor want to use.
 
     raise 'EDITOR environment variable is not set' if editor.nil?
@@ -15,7 +33,7 @@ module Install
     base_download_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz"
     # pkgbuild_url = "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=#{pkg}"
 
-    raise 'Specify the AUR package you want\nUsage: archpkg -S [package]' if pkg.nil?
+    #raise 'Specify the AUR package you want\nUsage: archpkg -S [package]' if pkg.nil?
 
     puts ":: Installing #{pkg} from aur"
 

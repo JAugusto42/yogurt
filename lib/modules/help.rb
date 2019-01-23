@@ -1,10 +1,10 @@
 module Help
   def help
     puts <<-HEREDOC
-  YAAH! Yet Another Aur Helper.
+  YOUGURT! An simple aur helper for arch linux.
   Usage:
     -Ss <package>   Find a package
-    -S  <package>   Install a package ( IN TESTING )
+    -S  <package>   Install a package
     HEREDOC
   end
 end
