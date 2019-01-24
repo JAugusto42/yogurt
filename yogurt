@@ -23,7 +23,6 @@ require 'zlib'
 # Local Files
 require_relative 'lib/modules/help'
 require_relative 'lib/modules/install'
-require_relative 'lib/modules/remove'
 require_relative 'lib/modules/search'
 require_relative 'lib/modules/update'
 
@@ -31,15 +30,18 @@ class Main
   # include function from modules
   include Help
   include Install
-  #  TODO include Remove
   include Search
   include Update
 
   def initialize
-    raise 'Requires ruby >= 2.4.0' if RUBY_VERSION < '2.4.0'
+    raise 'Requires ruby >= 2.4.0' if RUBY_VERSION <= '2.4.0'
+
+    str = ARGV[0].to_s
 
     if ARGV.empty?
       update
+    elsif str[0] != '-'
+      puts "passou aqui"
       exit
     end
 

@@ -33,8 +33,6 @@ module Install
     base_download_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz"
     # pkgbuild_url = "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=#{pkg}"
 
-    #raise 'Specify the AUR package you want\nUsage: archpkg -S [package]' if pkg.nil?
-
     puts ":: Installing #{pkg} from aur"
 
     system(`curl -o /tmp/#{pkg}.tar.gz #{base_download_url}`) # TODO get package with ruby, not curl

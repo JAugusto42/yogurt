@@ -4,7 +4,7 @@ module Update
   def update_package(pkg_name)
     base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}"
     puts ":: Update #{pkg} from aur..."
-    system(`curl -o /tmp/#{pkg}.tar.gz #{base_url}`) # TODO get package with ruby, not curl
+    system(`curl -o /tmp/#{pkg}.tar.gz #{base_url}`) # TODO: get package with ruby, not curl
     Dir.chdir '/tmp/'
 
     tar_longlink = '././@LongLink'
@@ -51,14 +51,14 @@ module Update
 
   def update
     puts ':: Searching updates on official repositories...'
-    system('sudo pacman -Syyu')
+    system('sudo pacman -Syu')
     puts ':: Searching for aur packages updates...'
     aur_pkgs = `sudo pacman -Qm`
     aur_pkg_array = aur_pkgs.split("\n")
     puts aur_pkg_array
     aur_pkg_array.each do |pkg_name|
-      name_aur_pkg = "#{pkg_name}".split[0] # get name package
-      pkg_local_version = "#{pkg_name}".split[1] # get local packages version
+      name_aur_pkg = pkg_name.to_s.split[0] # get name package
+      pkg_local_version = pkg_name.to_s.split[1] # get local packages version
 
       url = "https://aur.archlinux.org/rpc/?v=5&type=info&arg=#{name_aur_pkg}"
       buffer = open(url).read
@@ -66,15 +66,15 @@ module Update
       packages_name = obj['results']
       name = packages_name.map { |result| result['Name'] }
       version = packages_name.map { |result| result['Version'] }
-      #name_and_version = "#{name} #{version}"
-      #puts name_and_version
-      #puts pkg_local_version
+      # name_and_version = "#{name} #{version}"
+      # puts name_and_version
+      # puts pkg_local_version
 
-      if version != pkg_local_version
-        pkg_update = "#{name}-#{version}"
-        puts ":: An update was found for #{pkg_update}"
-        # update_package(aur_pkg_array)
-      end
+      next unless version != pkg_local_version
+
+      pkg_update = "#{name}-#{version}"
+      puts ":: An update was found for #{pkg_update}"
+      # update_package(aur_pkg_array)
     end
   end
 end
