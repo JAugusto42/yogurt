@@ -22,4 +22,4 @@ def install(package):
     os.remove("{}.tar.gz".format(package))
     os.chdir("{}".format(package))
     print('Installing package', package)
-    os.system('makepkg -csi')
+    os.system('makepkg -csi')  # TODO subprocess

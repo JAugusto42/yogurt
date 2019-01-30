@@ -10,15 +10,17 @@ def search(package):
     packages = url_json['results']
     if number_of_packages == 0:
         print(":: Package " + package + " not found.")
+        return
     else:
         print(":: Found " + str(number_of_packages) + " packages")
-        count = 0
-        option = 1
-        while number_of_packages > count:
-            name = packages[count]['Name']
-            version = packages[count]['Version']
-            description = packages[count]['Description']
-            print(str(option) + '\033[94m' + ' aur/' + name + '\033[0m' + ' ' + version)
-            print('   ' + description)
-            option += 1
-            count += 1
+
+    count = 0
+    option = 1
+    while number_of_packages > count:
+        name = packages[count]['Name']
+        version = packages[count]['Version']
+        description = packages[count]['Description']
+        print(str(option) + '\033[94m' + ' aur/' + name + '\033[0m' + ' ' + version)
+        print('   ' + description)
+        option += 1
+        count += 1
