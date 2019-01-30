@@ -1,73 +1,45 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env python
 
-# Creator: José Augusto
+# Creator: Jose Augusto
 # Create date: 20/08/2018
 # Last update: 23/01/2019
-# Contribuitors: Esdras Tarsis, brazilian ruby community.
 
-# #[TODOS]#################
-# Funcionar depois refatorar o código
-# Associar o package com o número para que, em vez de passar o número, passe o pacote correspondente.
-# Usar variaveis globais
-# Adicionar mais extenções como .deb .zip para baixar um pacote e ele tera que verificar
-# Um por um analisando a resposta 200 da url e baixar =D
-# Atualizar o metodo de instalação de pacotes, usando shell script ta feio.
-# Adicionar suporte ao out of date packages no aur
+# [imports]----------
+import sys
+import os
 
-# gems
-require 'open-uri'
-require 'json'
-require 'rubygems/package'
-require 'zlib'
+# [local files]------
+from modules import install
+from modules import search
+from modules import update
+from modules import help
 
-# Local Files
-require_relative 'lib/modules/help'
-require_relative 'lib/modules/install'
-require_relative 'lib/modules/search'
-require_relative 'lib/modules/update'
 
-class Main
-  # include function from modules
-  include Help
-  include Install
-  include Search
-  include Update
+class Main:
+    def __init__(self):
+        if sys.argv[1:]:
+            package = sys.argv[1]
+            if package[0] != '-':
+                print(package)
+            else:
+                if sys.argv[1] == '-S':
+                    if sys.argv[2:]:
+                        install.install(sys.argv[2])
+                    else:
+                        print("You have to specify a package")
+                elif sys.argv[1] == '-Ss':
+                    if sys.argv[2:]:
+                        search.search(sys.argv[2])
+                    else:
+                        print("You have to specify a package")
+                elif sys.argv[1] == '-U':
+                    update.update()
+                elif sys.argv[1] == '-h' or sys.argv[1] == '--help':
+                    help.help()
+                else:
+                    print('invalid argument:', sys.argv[1])
+        else:
+            os.system('sudo pacman -Syu')
 
-  def initialize
-    raise 'Requires ruby >= 2.4.0' if RUBY_VERSION <= '2.4.0'
 
-    str = ARGV[0].to_s
-
-    if ARGV.empty?
-      update
-    elsif str[0] != '-'
-      puts "passou aqui"
-      exit
-    end
-
-    case ARGV[0]
-    when '-S'
-      install_pkg
-
-    when '-Ss'
-      search
-
-    when '-U'
-      update
-
-    when '-h'
-      help
-
-    when '--help'
-      help
-
-    else
-      option = ARGV[0]
-      puts "Invalid option #{option}"
-      puts "Try './yogurt --help' for more information."
-      exit
-    end
-  end
-end
-
-Main.new
+main = Main()
