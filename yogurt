@@ -28,7 +28,16 @@ class Main:
                     else:
                         print("You have to specify a package")
                 elif sys.argv[1] == '-Ss':
-                    if sys.argv[2:]:
+                    if sys.argv[5:]:
+                        package = sys.argv[2] + '-' + sys.argv[3] + '-' + sys.argv[4] + '-' + sys.argv[5]
+                        search.search(package)
+                    elif sys.argv[4:]:
+                        package = sys.argv[2] + '-' + sys.argv[3] + '-' + sys.argv[4]
+                        search.search(package)
+                    elif sys.argv[3:]:
+                        package = sys.argv[2] + '-' + sys.argv[3]
+                        search.search(package)
+                    elif sys.argv[2:]:
                         search.search(sys.argv[2])
                     else:
                         print("You have to specify a package")

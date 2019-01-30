@@ -1,10 +1,9 @@
 # [imports]-------
 import requests
-import json
 
 
 def search(package):
-    print(":: Search " + package + " on aur...")
+    print(':: Search ' + '\x1b[6;30;42m' + package + '\x1b[0m' + ' on aur...')
     url = "https://aur.archlinux.org/rpc/?v=5&type=search&arg=" + package
     url_json = requests.get(url).json()
     number_of_packages = url_json['resultcount']
@@ -19,7 +18,7 @@ def search(package):
             name = packages[count]['Name']
             version = packages[count]['Version']
             description = packages[count]['Description']
-            print(str(option) + ' ' + name + ' ' + version)
+            print(str(option) + '\033[94m' + ' aur/' + name + '\033[0m' + ' ' + version)
             print('   ' + description)
             option += 1
             count += 1
