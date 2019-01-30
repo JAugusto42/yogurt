@@ -12,6 +12,7 @@ from modules import install
 from modules import search
 from modules import update
 from modules import help
+from modules import version
 
 
 class Main:
@@ -59,6 +60,8 @@ class Main:
                     update.update_aur()
                 elif sys.argv[1] == '-h' or sys.argv[1] == '--help':
                     help.help()
+                elif sys.argv[1] == '-v' or sys.argv[1] == '--version':
+                    version.version()
                 else:
                     print('invalid argument:', sys.argv[1])
         else:

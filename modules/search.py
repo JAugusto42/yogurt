@@ -1,5 +1,6 @@
 # [imports]-------
 import requests
+import os
 
 
 def search(package):
@@ -14,12 +15,15 @@ def search(package):
     else:
         print(":: Found " + str(number_of_packages) + " packages")
 
+    #local_packages = os.system('pacman -Qm')
+
     count = 0
     option = 1
     while number_of_packages > count:
         name = packages[count]['Name']
         version = packages[count]['Version']
         description = packages[count]['Description']
+        print(name, version)
         print(str(option) + '\033[94m' + ' aur/' + name + '\033[0m' + ' ' + version)
         print('   ' + description)
         option += 1
