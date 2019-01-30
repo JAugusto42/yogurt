@@ -1,18 +1,17 @@
+#@IgnoreInspection BashAddShebang
 #Manteiner: Jose Augusto <joseaugusto.881@outlook.com>
 pkgname=yogurt
 pkgver=r30.db59cdd
 pkgrel=1
-pkgdesc="An aur helper written in ruby"
+pkgdesc="Another aur helper"
 arch=('x86_64')
 url=https://github.com/jAugusto42/yogurt
 license=('MIT')
 depends=(
-  'sudo'
   'git'
-  'ruby'
 )
 makedepends=(
-  'ruby'
+  'python'
 )
 source=("${pkgname}::git+${url}.git")
 md5sums=('SKIP')
