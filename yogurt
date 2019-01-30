@@ -6,7 +6,6 @@
 
 # [imports]----------
 import sys
-import os
 
 # [local files]------
 from modules import install
@@ -20,7 +19,22 @@ class Main:
         if sys.argv[1:]:
             package = sys.argv[1]
             if package[0] != '-':
-                print(package)
+                if sys.argv[5:]:
+                    package = sys.argv[2] + '-' + sys.argv[3] + '-' + sys.argv[4] + '-' + sys.argv[5]
+                    search.search(package)
+                elif sys.argv[4:]:
+                    package = sys.argv[2] + '-' + sys.argv[3] + '-' + sys.argv[4]
+                    search.search(package)
+                elif sys.argv[3:]:
+                    package = sys.argv[2] + '-' + sys.argv[3]
+                    search.search(package)
+                elif sys.argv[2:]:
+                    package = sys.argv[1] + '-' + sys.argv[2]
+                    search.search(package)
+                elif sys.argv[1:]:
+                    search.search(sys.argv[1])
+                else:
+                    print("You have to specify a package")
             else:
                 if sys.argv[1] == '-S':
                     if sys.argv[2:]:
@@ -42,13 +56,13 @@ class Main:
                     else:
                         print("You have to specify a package")
                 elif sys.argv[1] == '-U':
-                    update.update()
+                    update.update_aur()
                 elif sys.argv[1] == '-h' or sys.argv[1] == '--help':
                     help.help()
                 else:
                     print('invalid argument:', sys.argv[1])
         else:
-            os.system('sudo pacman -Syu')
+            update.update_all()
 
 
 main = Main()
