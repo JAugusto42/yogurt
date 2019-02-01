@@ -2,7 +2,7 @@
 
 # Creator: Jose Augusto
 # Create date: 20/08/2018
-# Last update: 23/01/2019
+# Last update: 31/01/2019
 
 # [imports]----------
 import sys
@@ -16,10 +16,13 @@ from modules import version
 
 
 class Main:
+    """
+    """
     def __init__(self):
         if sys.argv[1:]:
             package = sys.argv[1]
             if package[0] != '-':
+                # TODO Create a function
                 if sys.argv[5:]:
                     package = sys.argv[2] + '-' + sys.argv[3] + '-' + sys.argv[4] + '-' + sys.argv[5]
                     search.search(package)
