@@ -3,12 +3,12 @@
 module Update
   def update_package(pkg_name)
     base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}"
-    puts ":: Update #{pkg} from aur..."
-    system(`curl -o /tmp/#{pkg}.tar.gz #{base_url}`) # TODO: get package with ruby, not curl
+    puts ":: Update #{pkg_name} from aur..."
+    system(`curl -o /tmp/#{pkg_name}.tar.gz #{base_url}`) # TODO: get package with ruby, not curl
     Dir.chdir '/tmp/'
 
     tar_longlink = '././@LongLink'
-    tar_gz_archive = "#{pkg}.tar.gz"
+    tar_gz_archive = "#{pkg_name}.tar.gz"
     destination = '.'
     begin
       Gem::Package::TarReader.new(Zlib::GzipReader.open(tar_gz_archive)) do |tar|
@@ -39,23 +39,22 @@ module Update
       exit
     end
 
-    File.delete("#{pkg}.tar.gz")
+    File.delete("#{pkg_name}.tar.gz")
 
-    Dir.chdir "/tmp/#{pkg}"
+    Dir.chdir "/tmp/#{pkg_name}"
 
     system('makepkg -csi')
 
     Dir.chdir '/tmp/'
-    FileUtils.rm_r pkg.to_s
+    FileUtils.rm_r pkg_name.to_s
   end
 
   def update
     puts ':: Searching updates on official repositories...'
     system('sudo pacman -Syu')
     puts ':: Searching for aur packages updates...'
-    aur_pkgs = `sudo pacman -Qm`
-    aur_pkg_array = aur_pkgs.split("\n")
-    puts aur_pkg_array
+    aur_local_pkgs = `sudo pacman -Qm`
+    aur_pkg_array = aur_local_pkgs.split("\n")
     aur_pkg_array.each do |pkg_name|
       name_aur_pkg = pkg_name.to_s.split[0] # get name package
       pkg_local_version = pkg_name.to_s.split[1] # get local packages version
@@ -66,15 +65,17 @@ module Update
       packages_name = obj['results']
       name = packages_name.map { |result| result['Name'] }
       version = packages_name.map { |result| result['Version'] }
-      # name_and_version = "#{name} #{version}"
-      # puts name_and_version
-      # puts pkg_local_version
+      aur_version = version[0]
 
-      next unless version != pkg_local_version
-
-      pkg_update = "#{name}-#{version}"
-      puts ":: An update was found for #{pkg_update}"
-      # update_package(aur_pkg_array)
+      if aur_version.to_i != pkg_local_version.to_i
+        puts ":: An update was found for #{name_aur_pkg}"
+        puts 'Continue [Yn]?'
+        answer = gets
+        answer == 'Y' || answer == 'y' ? update_package(name) : exit
+      else
+        puts ':: No updates was found for aur repository.'
+        exit
+      end
     end
   end
 end
