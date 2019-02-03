@@ -1,4 +1,3 @@
-#@IgnoreInspection BashAddShebang
 #Manteiner: Jose Augusto <joseaugusto.881@outlook.com>
 pkgname=yogurt
 pkgver=r30.db59cdd
