@@ -24,7 +24,6 @@ module Search
       pkg = "#{ARGV[0]}-#{ARGV[1]}-#{ARGV[2]}-#{ARGV[3]}-#{ARGV[4]}"
     end
 
-
     puts ":: Seaching #{pkg} on aur..."
     url = "https://aur.archlinux.org/rpc/?v=5&type=search&arg=#{pkg}"
     buffer = open(url).read
@@ -48,8 +47,5 @@ module Search
       count += 1
       count_to_show += 1
     end
-    # range = (0..count).to_a
-    # input_packages = STDIN.gets.chomp.to_i
-    # install_pkg(input_packages) if range.include?(input_packages)
   end
 end

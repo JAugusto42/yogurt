@@ -10,17 +10,17 @@ module Install
       puts 'You have to specify a package from aur repository. Usage: yogurt -S package'
       exit
     elsif ARGV[2]
-      puts 'You must specify the exact name of the package, use yogurt -Ss [package] or yogurt package name'
+      puts 'You must specify the exact name of the package, use yogurt -Ss [package] or yogurt package name without spaces'
       exit
     else
       pkg = ARGV[1]
     end
+
     editor = 'nano' # TODO: ask for what editor want to use.
 
     raise 'EDITOR environment variable is not set' if editor.nil?
 
     base_download_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz"
-    # pkgbuild_url = "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=#{pkg}"
 
     puts ":: Installing #{pkg} from aur"
 
@@ -70,5 +70,10 @@ module Install
 
     Dir.chdir '/tmp/'
     FileUtils.rm_r pkg.to_s
+  end
+
+
+  def check_editor
+
   end
 end

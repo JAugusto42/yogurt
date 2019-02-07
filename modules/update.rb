@@ -4,7 +4,7 @@ module Update
   def update_package(pkg_name)
     base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}"
     puts ":: Update #{pkg_name} from aur..."
-    system(`curl -o /tmp/#{pkg_name}.tar.gz #{base_url}`) # TODO: get package with ruby, not curl
+    system(`curl -o /tmp/#{pkg_name}.tar.gz #{base_url}`) # TODO: found a simple way to get the pkg with ruby
     Dir.chdir '/tmp/'
 
     tar_longlink = '././@LongLink'
@@ -43,6 +43,7 @@ module Update
 
     Dir.chdir "/tmp/#{pkg_name}"
 
+    #c= clear, s= sync dependencies, i= install
     system('makepkg -csi')
 
     Dir.chdir '/tmp/'
@@ -53,7 +54,7 @@ module Update
     puts ':: Searching updates on official repositories...'
     system('sudo pacman -Syu')
     puts ':: Searching for aur packages updates...'
-    aur_local_pkgs = `sudo pacman -Qm`
+    aur_local_pkgs = `pacman -Qm`
     aur_pkg_array = aur_local_pkgs.split("\n")
     aur_pkg_array.each do |pkg_name|
       name_aur_pkg = pkg_name.to_s.split[0] # get name package
@@ -66,6 +67,10 @@ module Update
       name = packages_name.map { |result| result['Name'] }
       version = packages_name.map { |result| result['Version'] }
       aur_version = version[0]
+
+      while pkg_local_version == aur_version
+        puts 'igual'
+      end
 
       if aur_version.to_i != pkg_local_version.to_i
         puts ":: An update was found for #{name_aur_pkg}"

@@ -1,6 +1,6 @@
 #Manteiner: Jose Augusto <joseaugusto.881@outlook.com>
 pkgname=yogurt
-pkgver=r30.db59cdd
+pkgver=1.9
 pkgrel=1
 pkgdesc="Another aur helper"
 arch=('x86_64')
