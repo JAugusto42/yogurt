@@ -2,8 +2,7 @@
 
 module Update
   def update_package(pkg_name)
-    base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name.to_s}"
-    puts base_url.class
+    base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}.tar.gz"
     puts base_url
     puts ":: Update #{pkg_name} from aur..."
     system(`curl -o /tmp/#{pkg_name}.tar.gz #{base_url}`) # TODO: found a simple way to get the pkg with ruby
@@ -70,17 +69,12 @@ module Update
       version = packages_name.map { |result| result['Version'] }
       aur_version = version[0]
 
-      if pkg_local_version == aur_version
+      if pkg_local_version != aur_version
         puts ":: An update was found for #{name_aur_pkg}"
         puts 'Continue [Yn]?'
         answer = gets.chomp
-        if answer == 'Y' || answer == 'y'
-          puts name
-          update_package(name)
-        else
-          exit
-        end
-       # answer == 'Y' || answer == 'y' ? update_package(name) : exit
+
+        answer == 'Y' || answer == 'y' ? update_package(name) : exit
       else
         puts ':: No updates was found for aur repository.'
         exit
