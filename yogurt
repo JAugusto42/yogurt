@@ -20,10 +20,10 @@ require 'rubygems/package'
 require 'zlib'
 
 # Local Files
-require_relative 'modules/help'
-require_relative 'modules/install'
-require_relative 'modules/search'
-require_relative 'modules/update'
+require_relative 'pkg/usr/bin/yogurt/modules/help'
+require_relative 'pkg/usr/bin/yogurt/modules/install'
+require_relative 'pkg/usr/bin/yogurt/modules/search'
+require_relative 'pkg/usr/bin/yogurt/modules/update'
 
 class Main
   # include function from modules
