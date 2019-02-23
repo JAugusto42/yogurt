@@ -1,0 +1,15 @@
+pkgbase = yogurt
+	pkgdesc = Another aur helper
+	pkgver = 1.1.2
+	pkgrel = 1
+	url = https://github.com/jAugusto42/yogurt
+	arch = x86_64
+	license = MIT
+	makedepends = python
+	depends = ruby
+	depends = git
+	source = https://github.com/JAugusto42/yogurt/archive/1.1.2.tar.gz
+	md5sums = SKIP
+
+pkgname = yogurt
+
