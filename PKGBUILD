@@ -1,25 +1,28 @@
+#@IgnoreInspection BashAddShebang
 #Manteiner: Jose Augusto <joseaugusto.881@outlook.com>
 pkgname=yogurt
-pkgver=1.1.2
+pkgver=r30.db59cdd
 pkgrel=1
 pkgdesc="Another aur helper"
 arch=('x86_64')
-source=https://github.com/JAugusto42/yogurt/releases/tag/
 url=https://github.com/jAugusto42/yogurt
 license=('MIT')
 depends=(
-  'ruby'
   'git'
 )
 makedepends=(
   'python'
 )
-
-  	
-source=("https://github.com/JAugusto42/yogurt/archive/$pkgver.tar.gz")
+source=("${pkgname}::git+${url}.git")
 md5sums=('SKIP')
 
+pkgver() {
+    cd "$srcdir/$pkgname-$pkgver"
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
 package() {
-    cd "$pkgname-$pkgver"
-    install -Dm755 "$pkgname" "$pkgdir/usr/bin/$pkgname"
+    cd "$srcdir/$pkgname-$pkgver"
+  	install -Dm755 yogurt {pkgdir}/usr/bin/yogurt
+
 }
