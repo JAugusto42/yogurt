@@ -1,8 +1,8 @@
 # YOGURT
-yogurt is a simple AUR helper for Arch Linux written in Python Programming Language and uses pacman syntax.
+yogurt is a simple AUR helper for Arch Linux written in Ruby Programming Language and uses pacman syntax.
 
 ## Requirements
-`Python >= 3.6`
+`Ruby >= 2.6`
 
 ## How to use?
 
