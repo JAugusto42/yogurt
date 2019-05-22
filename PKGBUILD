@@ -8,10 +8,10 @@ arch=('x86_64')
 url=https://github.com/jAugusto42/yogurt
 license=('MIT')
 depends=(
-  'git'
+  'git' 'ruby'
 )
 makedepends=(
-  'python'
+  'ruby'
 )
 source=("${pkgname}::git+${url}.git")
 md5sums=('SKIP')
@@ -24,5 +24,4 @@ pkgver() {
 package() {
     cd "$srcdir/$pkgname-$pkgver"
   	install -Dm755 yogurt {pkgdir}/usr/bin/yogurt
-
 }
