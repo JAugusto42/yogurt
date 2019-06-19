@@ -6,7 +6,7 @@ function main() {
   sudo git clone https://github.com/JAugusto42/yogurt.git /opt/yogurt
   cd /opt/yogurt
 
-  sudo ln -s yogurt /bin
+  sudo ln -s $PWD/yogurt /bin
 
   # this line remove this script =D
   # rm -- "$0"
