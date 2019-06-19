@@ -55,7 +55,6 @@ module Update
     puts ':: Searching for aur packages updates...'
     aur_pkgs = `sudo pacman -Qm`
     aur_pkg_array = aur_pkgs.split("\n")
-    puts aur_pkg_array
     aur_pkg_array.each do |pkg_name|
       name_aur_pkg = pkg_name.to_s.split[0] # get name package
       pkg_local_version = pkg_name.to_s.split[1] # get local packages version
@@ -69,12 +68,11 @@ module Update
       # name_and_version = "#{name} #{version}"
       # puts name_and_version
       # puts pkg_local_version
-
-      next unless version != pkg_local_version
-
-      pkg_update = "#{name}-#{version}"
-      puts ":: An update was found for #{pkg_update}"
-      # update_package(aur_pkg_array)
+      
+      if version.to_s.equal? pkg_local_version.to_s
+        puts ":: An update was found for #{name}"
+      end
     end
+  puts ':: No updates was found'
   end
 end
