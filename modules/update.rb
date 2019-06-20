@@ -71,6 +71,7 @@ module Update
       
       if version.to_s.equal? pkg_local_version.to_s
         puts ":: An update was found for #{name}"
+        update_package(name)
       end
     end
   puts ':: No updates was found'
