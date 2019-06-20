@@ -5,14 +5,19 @@ yogurt is a simple AUR helper for Arch Linux written in Ruby Programming Languag
 `Ruby >= 2.6`
 
 ## How to install
-TODO
+just execute the install script.
+
 ## How to use?
 
 ### Search packages
-`./yogurt -Ss packagename`
+`yogurt -Ss packagename`
+`yogurt packagename`
 
 ### Install packages
-`./yogurt -S packagename`
+`yogurt -S packagename`
+
+### Update all system (pacman and aur)
+`yogurt`
 
 ### TODOs
 `Update package`
