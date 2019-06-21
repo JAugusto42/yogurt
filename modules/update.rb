@@ -2,13 +2,15 @@
 
 module Update
   def update_package(pkg_name)
-    base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}"
-    puts ":: Update #{pkg} from aur..."
-    system(`curl -o /tmp/#{pkg}.tar.gz #{base_url}`) # TODO: get package with ruby, not curl
+    base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}.tar.gz"
+    puts ":: Update #{pkg_name} from aur..."
+    system(`sleep 1`)
+    system(`curl -o /tmp/#{pkg_name}.tar.gz #{base_url}`) # TODO: get package with ruby, not curl
+    puts "#{base_url}"
     Dir.chdir '/tmp/'
 
     tar_longlink = '././@LongLink'
-    tar_gz_archive = "#{pkg}.tar.gz"
+    tar_gz_archive = "#{pkg_name}.tar.gz"
     destination = '.'
     begin
       Gem::Package::TarReader.new(Zlib::GzipReader.open(tar_gz_archive)) do |tar|
@@ -39,21 +41,21 @@ module Update
       exit
     end
 
-    File.delete("#{pkg}.tar.gz")
+    File.delete("#{pkg_name}.tar.gz")
 
-    Dir.chdir "/tmp/#{pkg}"
+    Dir.chdir "/tmp/#{pkg_name}"
 
     system('makepkg -csi')
 
     Dir.chdir '/tmp/'
-    FileUtils.rm_r pkg.to_s
+    FileUtils.rm_r pkg_name.to_s
   end
 
   def update
     puts ':: Searching updates on official repositories...'
     system('sudo pacman -Syu')
     puts ':: Searching for aur packages updates...'
-    aur_pkgs = `sudo pacman -Qm`
+    aur_pkgs = `pacman -Qm`
     aur_pkg_array = aur_pkgs.split("\n")
     aur_pkg_array.each do |pkg_name|
       name_aur_pkg = pkg_name.to_s.split[0] # get name package
@@ -67,13 +69,15 @@ module Update
       version = packages_name.map { |result| result['Version'] }
       # name_and_version = "#{name} #{version}"
       # puts name_and_version
-      # puts pkg_local_version
-      
+
       if version.to_s.equal? pkg_local_version.to_s
-        puts ":: An update was found for #{name}"
-        update_package(name)
+        puts ':: No updates was found'
+      elsif name.empty?
+        puts ":: Not found in repositorie #{name_aur_pkg}"
+      else
+        puts ":: An update was found for #{name_aur_pkg}"
+        update_package(name_aur_pkg)
       end
     end
-  puts ':: No updates was found'
   end
 end
