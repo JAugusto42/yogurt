@@ -19,6 +19,5 @@ just execute the install script.
 ### Update all system (pacman and aur)
 `yogurt`
 
-### TODOs
-`Update package`
+## TODOs
 `pkgbuild`
