@@ -6,7 +6,6 @@ module Update
     puts ":: Update #{pkg_name} from aur..."
     system(`sleep 1`)
     system(`curl -o /tmp/#{pkg_name}.tar.gz #{base_url}`) # TODO: get package with ruby, not curl
-    puts "#{base_url}"
     Dir.chdir '/tmp/'
 
     tar_longlink = '././@LongLink'
