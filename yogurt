@@ -2,7 +2,7 @@
 
 # Creator: Jose Augusto
 # Create date: 20/08/2018
-# Last update: 02/02/2019
+# Last update: 21/06/2019
 # Contribuitors: Esdras Tarsis, brazilian ruby community.
 
 
@@ -62,7 +62,7 @@ class Main
       option = ARGV[0].to_s
       if option[0] == '-'
         puts "Invalid option #{option}"
-        puts "Try './yogurt --help' for more information."
+        puts "Try 'yogurt --help' for more information."
         exit
       end
     end

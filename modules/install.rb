@@ -64,7 +64,7 @@ module Install
 
     Dir.chdir "/tmp/#{pkg}"
 
-    puts ":: Edit #{pkg} PKGBUILD? [Y/n]"
+    print ":: Edit #{pkg} PKGBUILD? [Y/n]"
     system("#{editor} PKGBUILD") unless STDIN.gets.chomp.casecmp('N').zero?
     system('makepkg -csi')
 

@@ -12,7 +12,7 @@ operations:
     yogurt {-S --sync}        [package(s)]
     yogurt {-U --upgrade}
 
-If no arguments are provided 'yogurt -Syu' will be performed
+If no arguments are provided 'yogurt -Syu' will be performed.
 HEREDOC
 end
 end
