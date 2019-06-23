@@ -5,7 +5,7 @@ module Search
     packages_local = Dir.children('/var/lib/pacman/local') # get only packages names
 
     if ARGV[0].nil?
-      puts 'You have to specify a package to search like yogurt -Ss package name'
+      puts 'You have to specify a package to search like yogurt -Ss package or yogurt package '
       exit
 
     elsif ARGV[1].nil?
@@ -24,6 +24,11 @@ module Search
       pkg = "#{ARGV[0]}-#{ARGV[1]}-#{ARGV[2]}-#{ARGV[3]}-#{ARGV[4]}"
     end
 
+    puts ":: Seaching #{pkg} on official repositories..."
+    official_repos = system("pacman -Ssq #{pkg} > /dev/null")
+    if official_repos
+      puts ":: The package #{pkg} exists on official repositories, use pacman!"
+    end
 
     puts ":: Seaching #{pkg} on aur..."
     url = "https://aur.archlinux.org/rpc/?v=5&type=search&arg=#{pkg}"
