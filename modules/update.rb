@@ -66,17 +66,16 @@ module Update
       packages_name = obj['results']
       name = packages_name.map { |result| result['Name'] }
       version = packages_name.map { |result| result['Version'] }
-      # name_and_version = "#{name} #{version}"
-      # puts name_and_version
 
-      if version.to_s.equal? pkg_local_version.to_s
-        puts ':: No updates was found'
-      elsif name.empty?
+      if version[0].nil?
         puts ":: Not found in repositorie #{name_aur_pkg}"
-      else
+      elsif version[0].to_s != pkg_local_version.to_s
         puts ":: An update was found for #{name_aur_pkg}"
-        update_package(name_aur_pkg)
+        puts ":: Do the update? [Y/n]"
+        update_package(name_aur_pkg) unless STDIN.gets.chomp.casecmp('N').zero?
       end
+
     end
+    puts ':: No updates was found'
   end
 end
