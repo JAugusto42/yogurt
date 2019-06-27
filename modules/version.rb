@@ -1,2 +1,2 @@
 def version():
-    print()
+  print('Version: 1.0')
