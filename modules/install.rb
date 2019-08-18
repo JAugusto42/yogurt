@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'open-uri'
+require 'socket'
 
 
 module Install
@@ -15,13 +16,14 @@ module Install
     else
       pkg = ARGV[1]
     end
+
     editor = 'nano' # TODO: ask for what editor want to use.
 
     raise 'EDITOR environment variable is not set' if editor.nil?
+    
 
     base_download_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz"
-    # pkgbuild_url = "https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=#{pkg}"
-
+    
     puts ":: Installing #{pkg} from aur"
 
     system(`curl -o /tmp/#{pkg}.tar.gz #{base_download_url}`) # TODO: get package with ruby, not curl
@@ -57,6 +59,9 @@ module Install
       end
     rescue Zlib::GzipFile::Error => error
       puts "#{error.class}: #{error}"
+      exit
+    rescue Errno::ENOENT
+      puts "\n:: Check your internet Connection\n"
       exit
     end
 
