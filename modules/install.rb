@@ -22,11 +22,19 @@ module Install
     raise 'EDITOR environment variable is not set' if editor.nil?
     
 
-    base_download_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz"
-    
-    puts ":: Installing #{pkg} from aur"
+    begin
+      download = open("https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz")
+      IO.copy_stream(download, "/tmp/#{pkg}.tar.gz")
+      puts ":: Installing #{pkg} from aur"
 
-    system(`curl -o /tmp/#{pkg}.tar.gz #{base_download_url}`) # TODO: get package with ruby, not curl
+    rescue SocketError => e
+      puts "\n:: Check your internet Connection\n"
+      exit
+
+    rescue Exception => e
+      puts "Package not found"
+      exit
+    end
 
     Dir.chdir '/tmp/'
 
@@ -59,9 +67,6 @@ module Install
       end
     rescue Zlib::GzipFile::Error => error
       puts "#{error.class}: #{error}"
-      exit
-    rescue Errno::ENOENT
-      puts "\n:: Check your internet Connection\n"
       exit
     end
 
