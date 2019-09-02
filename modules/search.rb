@@ -52,9 +52,6 @@ module Search
         puts "  #{description[count]}"
         count += 1
       end
-    # range = (0..count).to_a
-    # input_packages = STDIN.gets.chomp.to_i
-    # install_pkg(input_packages) if range.include?(input_packages)
     rescue SocketError
       puts "\n:: Check your internet connection"
       exit
