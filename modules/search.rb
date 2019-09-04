@@ -41,6 +41,7 @@ module Search
       names = packages_name.map { |result| result['Name'] }
       version = packages_name.map { |result| result['Version'] }
       description = packages_name.map { |result| result['Description'] }
+      out_of_date = packages_name.map { |result| result['OutOfDate'] }
 
       puts ":: Found #{packages} packages"
       count = 0
@@ -48,6 +49,7 @@ module Search
       while count < packages
         name_and_version = "#{names[count]}-#{version[count]}"
         check = printf("\e[1;34mInstalled\e[0m ") if packages_local.include?(name_and_version)
+        outofdate = printf(":: \e[1;32mPackage Out Of Date\e[0m ") if out_of_date
         puts ":: \e[1;32m#{count}\e[0m aur/#{names[count]} \e[0;32m#{version[count]}\e[0m #{check}"
         puts "  #{description[count]}"
         count += 1
