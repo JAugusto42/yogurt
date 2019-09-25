@@ -21,7 +21,7 @@ require 'json'
 require 'rubygems/package'
 require 'zlib'
 
-# Local Files
+# Local Modules
 require_relative 'modules/help'
 require_relative 'modules/install'
 require_relative 'modules/search'
