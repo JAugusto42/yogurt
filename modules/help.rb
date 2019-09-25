@@ -14,5 +14,5 @@ operations:
 
 If no arguments are provided 'yogurt -Syu' will be performed.
 HEREDOC
-end
+  end
 end
