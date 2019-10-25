@@ -49,7 +49,7 @@ module Search
       while count < packages
         name_and_version = "#{names[count]}-#{version[count]}"
         check = printf("\e[1;34mInstalled\e[0m ") if packages_local.include?(name_and_version)
-        outofdate = printf(":: \e[1;32mPackage Out Of Date\e[0m ") if out_of_date.nil?
+        printf(":: \e[1;32mPackage Out Of Date\e[0m ") if out_of_date[0] != nil
         puts ":: \e[1;32m#{count}\e[0m aur/#{names[count]} \e[0;32m#{version[count]}\e[0m #{check}"
         puts "  #{description[count]}"
         count += 1
