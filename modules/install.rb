@@ -17,7 +17,7 @@ module Install
       pkg = ARGV[1]
     end
 
-    editor = 'nano' # TODO: ask for what editor want to use.
+    editor = 'vim' # TODO: ask for what editor want to use.
 
     raise 'EDITOR environment variable is not set' if editor.nil?
     
