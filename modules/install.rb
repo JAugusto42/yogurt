@@ -23,7 +23,7 @@ module Install
     
 
     begin
-      download = open("https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz")
+      download = URI.open("https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz")
       IO.copy_stream(download, "/tmp/#{pkg}.tar.gz")
       puts ":: Installing #{pkg} from aur"
 

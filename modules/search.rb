@@ -33,7 +33,7 @@ module Search
     puts ":: Seaching #{pkg} on aur..."
     begin
       url = "https://aur.archlinux.org/rpc/?v=5&type=search&arg=#{pkg}"
-      buffer = open(url).read
+      buffer = URI.open(url).read
       obj = JSON.parse(buffer)
       packages = obj['resultcount']
       packages_name = obj['results']
