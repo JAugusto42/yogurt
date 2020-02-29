@@ -42,6 +42,7 @@ module Search
       version = packages_name.map { |result| result['Version'] }
       description = packages_name.map { |result| result['Description'] }
       out_of_date = packages_name.map { |result| result['OutOfDate'] }
+      maintainer = packages_name.map { |result| result['Maintainer'] }
 
       puts ":: Found #{packages} packages"
       count = 0
@@ -50,6 +51,7 @@ module Search
         name_and_version = "#{names[count]}-#{version[count]}"
         check = printf("\e[1;34mInstalled\e[0m ") if packages_local.include?(name_and_version)
         printf(":: \e[1;32mPackage Out Of Date\e[0m ") if out_of_date[0] != nil
+        printf("::\e[1;32mOrphaned Package\e[0m") if maintainer[0] == nil
         puts ":: \e[1;32m#{count}\e[0m aur/#{names[count]} \e[0;32m#{version[count]}\e[0m #{check}"
         puts "  #{description[count]}"
         count += 1
