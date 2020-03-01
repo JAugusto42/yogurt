@@ -81,4 +81,8 @@ module Install
     Dir.chdir '/tmp/'
     FileUtils.rm_r pkg.to_s
   end
+
+  def check_package
+    # This function get the mainteiner if a array with maintainers return nil, yogurt exibe a alert!
+  end
 end
