@@ -60,12 +60,19 @@ module Update
       name_aur_pkg = pkg_name.to_s.split[0] # get name package
       pkg_local_version = pkg_name.to_s.split[1] # get local packages version
 
-      url = "https://aur.archlinux.org/rpc/?v=5&type=info&arg=#{name_aur_pkg}"
-      buffer = URI.open(url).read
-      obj = JSON.parse(buffer)
-      packages_name = obj['results']
-      name = packages_name.map { |result| result['Name'] }
-      version = packages_name.map { |result| result['Version'] }
+      begin
+
+        url = "https://aur.archlinux.org/rpc/?v=5&type=info&arg=#{name_aur_pkg}"
+        buffer = URI.open(url).read
+        obj = JSON.parse(buffer)
+        packages_name = obj['results']
+        name = packages_name.map { |result| result['Name'] }
+        version = packages_name.map { |result| result['Version'] }
+
+      rescue SocketError
+        puts "\n:: Check your internet connection\n"
+        exit
+      end
 
       if version[0].nil?
         puts ":: Not found in repositorie #{name_aur_pkg}"
