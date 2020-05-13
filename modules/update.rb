@@ -69,7 +69,7 @@ module Update
         name = packages_name.map { |result| result['Name'] }
         version = packages_name.map { |result| result['Version'] }
 
-      rescue SocketError
+      rescue SocketError, Net::OpenTimeout
         puts "\n:: Check your internet connection\n"
         exit
       end
