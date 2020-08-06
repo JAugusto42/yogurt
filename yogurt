@@ -2,18 +2,7 @@
 
 # Creator: Jose Augusto
 # Create date: 20/08/2018
-# Last update: 21/06/2019
 # Contribuitors: Esdras Tarsis, brazilian ruby community.
-
-
-# #[TODOS]#################
-# Funcionar depois refatorar o código
-# Associar o package com o número para que, em vez de passar o número, passe o pacote correspondente.
-# Usar variaveis globais
-# Adicionar mais extenções como .deb .zip para baixar um pacote e ele tera que verificar
-# Um por um analisando a resposta 200 da url e baixar =D
-# Atualizar o metodo de instalação de pacotes, usando shell script ta feio.
-# Adicionar suporte ao out of date packages no aur
 
 # gems
 require 'open-uri'
@@ -52,10 +41,7 @@ class Main
     when '-U'
       update
 
-    when '-h'
-      help
-
-    when '--help'
+    when '-h', '--help'
       help
 
     else
