@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 module Search
   def search
     packages_local = Dir.children('/var/lib/pacman/local') # get only packages names

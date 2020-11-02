@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 module Update
   def update_package(pkg_name)
     base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}.tar.gz"

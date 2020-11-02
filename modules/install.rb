@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 require 'fileutils'
 require 'open-uri'
 require 'socket'
