@@ -44,6 +44,9 @@ class Main
     when '-h', '--help'
       help
 
+    when '-v', '--version'
+      puts 'yogurt aur helper version: 1.0'
+
     else
       option = ARGV[0].to_s
       if option[0] == '-'
