@@ -59,14 +59,12 @@ module Update
       pkg_local_version = pkg_name.to_s.split[1] # get local packages version
 
       begin
-
         url = "https://aur.archlinux.org/rpc/?v=5&type=info&arg=#{name_aur_pkg}"
         buffer = URI.open(url).read
         obj = JSON.parse(buffer)
         packages_name = obj['results']
         name = packages_name.map { |result| result['Name'] }
         version = packages_name.map { |result| result['Version'] }
-
       rescue SocketError, Net::OpenTimeout
         puts "\n:: Check your internet connection\n"
         exit
@@ -74,10 +72,13 @@ module Update
 
       if version[0].nil?
         puts ":: Not found in repositorie #{name_aur_pkg}"
-      elsif version[0].to_s != pkg_local_version.to_s
+      elsif version[0].to_s > pkg_local_version.to_s
         puts ":: An update was found for #{name_aur_pkg}"
         puts ":: Do the update? [Y/n]"
         update_package(name_aur_pkg) unless STDIN.gets.chomp.casecmp('N').zero?
+      else
+        puts ':: there is nothing to do'
+        exit
       end
 
     end
