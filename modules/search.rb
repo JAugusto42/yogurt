@@ -2,6 +2,7 @@ module Search
   def search
     packages_local = Dir.children('/var/lib/pacman/local') # get only packages names
 
+    # TODO there's a better way to do this...
     if ARGV[0].nil?
       puts 'You have to specify a package to search like yogurt -Ss package or yogurt package '
       exit
@@ -24,9 +25,7 @@ module Search
 
     puts ":: Seaching #{pkg} on official repositories..."
     official_repos = system("pacman -Ssq #{pkg} > /dev/null")
-    if official_repos
-      puts ":: The package #{pkg} exists on official repositories, use pacman!"
-    end
+    puts ":: The package #{pkg} exists on official repositories, use pacman!" if official_repos
 
     puts ":: Seaching #{pkg} on aur..."
     begin

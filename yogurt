@@ -26,15 +26,12 @@ class Main
   def initialize
     raise 'Requires ruby >= 2.4.0' if RUBY_VERSION <= '2.4.0'
 
-    str = ARGV[0].to_s
+    argument = ARGV[0]
 
-    if ARGV.empty?
-      update
-    elsif str[0] != '-'
-      search
-    end
+    update if ARGV.empty?
+    search if argument[0].to_s != '-'
 
-    case ARGV[0]
+    case argument
     when '-S'
       install_pkg
 
@@ -45,13 +42,11 @@ class Main
       help
 
     when '-v', '--version'
-      puts 'yogurt aur helper version: 3.0'
+      puts 'yogurt aur helper version: 3.5'
 
     else
-      option = ARGV[0].to_s
-      if option[0] == '-'
-        puts "Invalid option #{option}"
-        puts "Try 'yogurt --help' for more information."
+      if argument[0].to_s == '-'
+        puts "Invalid option #{argument}, try 'yogurt -h or --help' for more information"
         exit
       end
     end

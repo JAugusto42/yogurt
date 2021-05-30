@@ -2,7 +2,6 @@ require 'fileutils'
 require 'open-uri'
 require 'socket'
 
-
 module Install
   def install_pkg
     if ARGV[1].nil?
@@ -18,7 +17,6 @@ module Install
     editor = 'vim' # TODO: ask for what editor want to use.
 
     raise 'EDITOR environment variable is not set' if editor.nil?
-    
 
     begin
       download = URI.open("https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz")
