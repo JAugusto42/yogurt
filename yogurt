@@ -24,7 +24,7 @@ class Main
   include Update
 
   def initialize
-    raise 'Requires ruby >= 2.4.0' if RUBY_VERSION <= '2.4.0'
+    raise 'Requires ruby >= 2.7.0' if RUBY_VERSION <= '2.7.0'
 
     argument = ARGV[0]
 
@@ -45,10 +45,8 @@ class Main
       puts 'yogurt aur helper version: 3.5'
 
     else
-      if argument[0].to_s == '-'
-        puts "Invalid option #{argument}, try 'yogurt -h or --help' for more information"
-        exit
-      end
+      puts "Invalid option #{argument}, try 'yogurt -h or --help' for more information"
+      exit
     end
   end
 end
