@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# module to upate packages
 module Update
   def update_package(pkg_name)
     base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}.tar.gz"
@@ -32,8 +35,8 @@ module Update
           dest = nil
         end
       end
-    rescue Zlib::GzipFile::Error => error
-      puts "#{error.class}: #{error}"
+    rescue Zlib::GzipFile::Error => e
+      puts "#{e.class}: #{e}"
       exit
     end
 
@@ -62,7 +65,6 @@ module Update
         buffer = URI.open(url).read
         obj = JSON.parse(buffer)
         packages_name = obj['results']
-        name = packages_name.map { |result| result['Name'] }
         version = packages_name.map { |result| result['Version'] }
       rescue SocketError, Net::OpenTimeout
         puts "\n:: Check your internet connection\n"
@@ -73,13 +75,12 @@ module Update
         puts ":: Not found in repositorie #{name_aur_pkg}"
       elsif version[0].to_s > pkg_local_version.to_s
         puts ":: An update was found for #{name_aur_pkg}"
-        puts ":: Do the update? [Y/n]"
-        update_package(name_aur_pkg) unless STDIN.gets.chomp.casecmp('N').zero?
+        puts ':: Do the update? [Y/n]'
+        update_package(name_aur_pkg) unless $stdin.gets.chomp.casecmp('N').zero?
       else
         puts ':: there is nothing to do'
         exit
       end
-
     end
     puts ':: No updates was found'
   end
