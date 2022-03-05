@@ -16,8 +16,8 @@ require_relative 'modules/install'
 require_relative 'modules/search'
 require_relative 'modules/update'
 
+# include function from modules
 class Main
-  # include function from modules
   include Help
   include Install
   include Search
@@ -42,7 +42,7 @@ class Main
       help
 
     when '-v', '--version'
-      puts 'yogurt aur helper version: 3.5'
+      puts 'yogurt aur helper version: 4.0'
 
     else
       puts "Invalid option #{argument}, try 'yogurt -h or --help' for more information"

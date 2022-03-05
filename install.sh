@@ -10,9 +10,7 @@ function main() {
   cd /opt/yogurt
 
   sudo ln -s $PWD/yogurt /bin
-
-  # this line remove this script =D
-  # rm -- "$0"
 }
 
 main;
+
