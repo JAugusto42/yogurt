@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 require 'open-uri'
 require 'socket'
 
+# module do install packages
 module Install
   def install_pkg
     if ARGV[1].nil?
@@ -22,16 +25,25 @@ module Install
       download = URI.open("https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg}.tar.gz")
       IO.copy_stream(download, "/tmp/#{pkg}.tar.gz")
       puts ":: Installing #{pkg} from aur"
-
-    rescue SocketError => e
+    rescue SocketError
       puts "\n:: Check your internet Connection\n"
       exit
-
-    rescue Exception => e
-      puts "Package not found"
+    rescue StandardError
+      puts 'Package not found'
       exit
     end
 
+    extract_package(pkg)
+
+    print ":: Edit #{pkg} PKGBUILD? [Y/n]"
+    system("#{editor} PKGBUILD") unless $stdin.gets.chomp.casecmp('N').zero?
+    system('makepkg -csi')
+
+    Dir.chdir '/tmp/'
+    FileUtils.rm_r pkg.to_s
+  end
+
+  def extract_package(pkg)
     Dir.chdir '/tmp/'
 
     tar_longlink = '././@LongLink'
@@ -61,24 +73,13 @@ module Install
           dest = nil
         end
       end
-    rescue Zlib::GzipFile::Error => error
-      puts "#{error.class}: #{error}"
+    rescue Zlib::GzipFile::Error => e
+      puts "#{e.class}: #{e}"
       exit
     end
 
     File.delete("#{pkg}.tar.gz")
 
-    Dir.chdir "/tmp/#{pkg}"
-
-    print ":: Edit #{pkg} PKGBUILD? [Y/n]"
-    system("#{editor} PKGBUILD") unless STDIN.gets.chomp.casecmp('N').zero?
-    system('makepkg -csi')
-
-    Dir.chdir '/tmp/'
-    FileUtils.rm_r pkg.to_s
-  end
-
-  def check_package
-    # This function get the mainteiner if a array with maintainers return nil, yogurt exibe a alert!
+    Dir.chdir pkg.to_s
   end
 end
