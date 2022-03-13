@@ -44,7 +44,7 @@ module Update
       elsif version[0].to_s > pkg_local_version.to_s
         puts ":: An update was found for #{name_aur_pkg}"
         puts ':: Do the update? [Y/n]'
-        update_package(name_aur_pkg) unless $stdin.gets.chomp.casecmp('N').zero?
+        update_package(name_aur_pkg) if $stdin.gets.chomp.casecmp('Y').zero?
       else
         puts ':: there is nothing to do'
         exit
