@@ -6,9 +6,9 @@ require_relative 'package_extractor'
 module Update
   include PackageExtractor
   def update_package(pkg_name)
-    base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}.tar.gz"
     puts ":: Update #{pkg_name} from aur..."
-    system(`curl -o /tmp/#{pkg_name}.tar.gz #{base_url}`) # TODO: get package with ruby, not curl
+    download = URI.open("https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}.tar.gz")
+    IO.copy_stream(download, "/tmp/#{pkg}.tar.gz")
 
     extractor(pkg) # module PackageExtractor
 
