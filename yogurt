@@ -1,8 +1,4 @@
-#!/usr/bin/env ruby
-
-# Creator: Jose Augusto
-# Create date: 20/08/2018
-# Contribuitors: Esdras Tarsis, brazilian ruby community.
+# !/usr/bin/env ruby
 
 # gems
 require 'open-uri'
@@ -15,6 +11,7 @@ require_relative 'modules/help'
 require_relative 'modules/install'
 require_relative 'modules/search'
 require_relative 'modules/update'
+require_relative 'modules/package_extractor'
 
 # include function from modules
 class Main

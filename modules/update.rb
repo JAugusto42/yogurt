@@ -1,48 +1,16 @@
 # frozen_string_literal: true
 
+require_relative 'package_extractor'
+
 # module to upate packages
 module Update
+  include PackageExtractor
   def update_package(pkg_name)
     base_url = "https://aur.archlinux.org/cgit/aur.git/snapshot/#{pkg_name}.tar.gz"
     puts ":: Update #{pkg_name} from aur..."
     system(`curl -o /tmp/#{pkg_name}.tar.gz #{base_url}`) # TODO: get package with ruby, not curl
-    Dir.chdir '/tmp/'
 
-    tar_longlink = '././@LongLink'
-    tar_gz_archive = "#{pkg_name}.tar.gz"
-    destination = '.'
-    begin
-      Gem::Package::TarReader.new(Zlib::GzipReader.open(tar_gz_archive)) do |tar|
-        dest = nil
-        tar.each do |entry|
-          if entry.full_name == tar_longlink
-            dest = File.join destination, entry.read.strip
-            next
-          end
-          dest ||= File.join destination, entry.full_name
-          if entry.directory?
-            FileUtils.rm_rf dest unless File.directory? dest
-            FileUtils.mkdir_p dest, mode: entry.header.mode, verbose: false
-          elsif entry.file?
-            FileUtils.rm_rf dest unless File.file? dest
-            File.open dest, 'wb' do |f|
-              f.print entry.read
-            end
-            FileUtils.chmod entry.header.mode, dest, verbose: false
-          elsif entry.header.typeflag == '2'
-            File.symlink entry.header.linkname, dest
-          end
-          dest = nil
-        end
-      end
-    rescue Zlib::GzipFile::Error => e
-      puts "#{e.class}: #{e}"
-      exit
-    end
-
-    File.delete("#{pkg_name}.tar.gz")
-
-    Dir.chdir "/tmp/#{pkg_name}"
+    extractor(pkg) # module PackageExtractor
 
     system('makepkg -csi')
 
