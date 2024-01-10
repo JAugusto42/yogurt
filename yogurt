@@ -5,6 +5,7 @@ require 'open-uri'
 require 'json'
 require 'rubygems/package'
 require 'zlib'
+require 'optparse'
 
 # Local Modules
 require_relative 'modules/help'
@@ -23,28 +24,28 @@ class Main
   def initialize
     raise 'Requires ruby >= 2.7.0' if RUBY_VERSION <= '2.7.0'
 
-    argument = ARGV[0]
+    options = {}
+    OptionParser.new do |opts|
+      opts.banner = 'Usage: yogurt [options]'
 
-    update if ARGV.empty?
-    search if argument[0].to_s != '-'
+      update if ARGV.empty?
 
-    case argument
-    when '-S'
-      install_pkg
+      opts.on('-h', '--help', 'Show help menu.') do
+        help
+      end
 
-    when '-U'
-      update
+      opts.on('-S', 'Install a specific package.') do
+        install_pkg
+      end
 
-    when '-h', '--help'
-      help
+      opts.on('-U', 'Perform an update verification.') do
+        update
+      end
 
-    when '-v', '--version'
-      puts 'yogurt aur helper version: 4.0'
-
-    else
-      puts "Invalid option #{argument}, try 'yogurt -h or --help' for more information"
-      exit
-    end
+      opts.on('--version', 'Show yogurt version.') do
+        puts 'yogurt aur helper version: 4.1'
+      end
+    end.parse!
   end
 end
 
