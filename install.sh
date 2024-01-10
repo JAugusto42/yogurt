@@ -9,6 +9,8 @@ function main() {
   sudo git clone https://github.com/JAugusto42/yogurt.git /opt/yogurt
   cd /opt/yogurt
 
+  bundle install
+
   sudo ln -s $PWD/yogurt /bin
 }
 
