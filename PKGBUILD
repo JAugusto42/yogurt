@@ -6,7 +6,7 @@ pkgdesc="Yet another aur helper."
 arch=('any')
 url="https://github.com/JAugusto42/yogurt"
 license=('MIT')
-depends=('ruby')
+#depends=('ruby')
 
 source=("$pkgname-$pkgver.tar.gz::https://github.com/JAugusto42/yogurt/archive/refs/tags/${pkgver}.tar.gz")
 
@@ -17,4 +17,4 @@ package() {
 }
 
 # SHA256 sum of the source archive
-sha256sums=('0f8985b3b80f991322fd3af7d9dbf761b9b561edab4c6d86c35309bb7bf7d1c4')
+sha256sums=('db04364399b2acb6b5026b56144ca31ad7b11848425eb3d978f325c4a49bde86')
