@@ -1,6 +1,6 @@
 # Maintainer: Jose Augusto <joseaugusto.881@outlook.com>
 pkgname=yogurt
-pkgver=3.0
+pkgver=4.0
 pkgrel=1
 pkgdesc="Yet another aur helper."
 arch=('any')
