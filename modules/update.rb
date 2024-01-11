@@ -46,7 +46,7 @@ module Update
         puts ':: Do the update? [Y/n]'
         update_package(name_aur_pkg) if $stdin.gets.chomp.casecmp('Y').zero?
       else
-        puts ':: there is nothing to do'
+        puts ' there is nothing to do'
         exit
       end
     end
