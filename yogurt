@@ -22,7 +22,7 @@ class Main
   include Update
 
   def initialize
-    raise 'Requires ruby >= 2.7.0' if RUBY_VERSION <= '2.7.0'
+    raise 'Requires ruby >= 3.1.0' if RUBY_VERSION <= '3.1.0'
 
     options = {}
     OptionParser.new do |opts|
