@@ -14,7 +14,7 @@ require_relative 'modules/search'
 require_relative 'modules/update'
 require_relative 'modules/package_extractor'
 
-# include function from modules
+# Define Main class
 class Main
   include Help
   include Install
@@ -22,30 +22,47 @@ class Main
   include Update
 
   def initialize
-    raise 'Requires ruby >= 3.1.0' if RUBY_VERSION <= '3.1.0'
+    check_ruby_version
 
+    options = parse_options
+
+    execute_command(options)
+  end
+
+  private
+
+  def check_ruby_version
+    raise 'Requires ruby >= 3.1.0' if RUBY_VERSION <= '3.1.0'
+  end
+
+  def parse_options
     options = {}
     OptionParser.new do |opts|
       opts.banner = 'Usage: yogurt [options]'
 
       update if ARGV.empty?
 
-      opts.on('-h', '--help', 'Show help menu.') do
-        help
-      end
-
-      opts.on('-S', 'Install a specific package.') do
-        install_pkg
-      end
-
-      opts.on('-U', 'Perform an update verification.') do
-        update
-      end
-
-      opts.on('--version', 'Show yogurt version.') do
-        puts 'yogurt aur helper version: 4.1'
-      end
+      opts.on('-h', '--help', 'Show help menu.') { help }
+      opts.on('-S PACKAGE', String, 'Install one specific package.') { |package| options[:install] = package }
+      opts.on('-U', 'Perform an update verification.') { update }
+      opts.on('--version', 'Show yogurt version.') { puts 'yogurt aur helper version: 4.1' }
     end.parse!
+
+    options
+  end
+
+  def execute_command(options)
+    if options[:install]
+      install_packages(options[:install])
+    end
+
+    # Add logic to execute other specified commands based on options
+  end
+
+  def install_packages(package)
+    # Add logic to install the specified packages
+    puts "Installing packages: #{package}"
+    install_pkg(package)
   end
 end
 

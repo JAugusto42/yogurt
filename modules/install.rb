@@ -3,20 +3,16 @@
 require 'fileutils'
 require 'open-uri'
 require 'socket'
+
 require_relative 'package_extractor'
 
 # module do install packages
 module Install
   include PackageExtractor
-  def install_pkg
-    if ARGV[1].nil?
+  def install_pkg(pkg)
+    if pkg.nil?
       puts 'You have to specify a package from aur repository. Usage: yogurt -S package'
       exit
-    elsif ARGV[2]
-      puts 'You must specify the exact name of the package, use yogurt -Ss [package] or yogurt package name'
-      exit
-    else
-      pkg = ARGV[1]
     end
 
     editor = 'vim' # TODO: ask for what editor want to use.
